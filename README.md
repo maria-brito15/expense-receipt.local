@@ -29,7 +29,7 @@ this is also part of an ongoing series of small tools that follow the same philo
 
 **online** — no install needed, just open the link:
 
-> 🔗 [maria-brito15.github.io/expense-receipt/index.html](https://maria-brito15.github.io/expense-receipt.local/index.html)
+> 🔗 [maria-brito15.github.io/expense-receipt.local/index.html](https://maria-brito15.github.io/expense-receipt.local/index.html)
 
 **locally** — clone the repo and open the file directly in any browser:
 
