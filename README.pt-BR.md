@@ -5,7 +5,7 @@
 **controle seus gastos como um recibo de papel — na hora.**
 *sem instalar · sem conta · sem servidor · so abrir e digitar*
 
-[abrir o app →](https://maria-brito15.github.io/expense-receipt/index.html)
+[🇧🇷 ler em inglês](README.md) · [abrir o app →](https://maria-brito15.github.io/expense-receipt.local/index.html)
 
 </div>
 
@@ -29,7 +29,7 @@ esse projeto tambem faz parte de uma serie de ferramentas pequenas que seguem a 
 
 **online** — sem instalacao, so abrir o link:
 
-> 🔗 [maria-brito15.github.io/expense-receipt/index.html](https://maria-brito15.github.io/expense-receipt/index.html)
+> 🔗 [maria-brito15.github.io/expense-receipt.local/index.html](https://maria-brito15.github.io/expense-receipt.local/index.html)
 
 **localmente** — clone o repositorio e abra o arquivo direto no navegador:
 
