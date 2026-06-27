@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Expense Receipt</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -16,7 +16,9 @@
     --rule: #1A1A1A;
     --font: 'IBM Plex Mono','Courier New',monospace;
   }
-  *{ box-sizing: border-box; }
+  *{ box-sizing: border-box; min-width: 0; }
+  html{ -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  html,body{ overflow-x: hidden; }
   body{
     margin: 0;
     min-height: 100vh;
@@ -25,7 +27,7 @@
     color: var(--ink);
     display: flex;
     justify-content: center;
-    padding: 56px 16px 90px;
+    padding: 40px 14px 60px;
   }
   .page{ width: 100%; max-width: 460px; }
 
@@ -36,6 +38,7 @@
     box-shadow: 0 18px 40px -12px rgba(0,0,0,.35), 0 2px 6px rgba(0,0,0,.1);
     padding: 34px 26px 30px;
     margin: 16px 0;
+    width: 100%;
   }
   .receipt::before,.receipt::after{
     content:"";position:absolute;left:0;right:0;height:14px;
@@ -54,55 +57,59 @@
 
   /* -- TOOLBAR -- */
   .toolbar{display:flex;flex-direction:column;gap:8px;margin-bottom:4px;}
-  .toolbar-row{display:flex;gap:8px;align-items:center;}
-  .search-wrap{position:relative;flex:1;}
+  .toolbar-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+  .search-wrap{position:relative;flex:1 1 140px;min-width:0;}
   .search-wrap input{
     width:100%;font-family:var(--font);font-size:.78rem;color:var(--ink);
-    background:transparent;border:1.5px solid var(--ink);padding:5px 8px 5px 26px;
+    background:transparent;border:1.5px solid var(--ink);padding:6px 8px 6px 26px;
   }
   .search-wrap input:focus{outline:none;border-width:2px;}
   .search-icon{position:absolute;left:7px;top:50%;transform:translateY(-50%);font-size:.85rem;color:var(--ink-soft);pointer-events:none;}
   .toolbar select{
     font-family:var(--font);font-size:.75rem;color:var(--ink);
-    background:var(--paper);border:1.5px solid var(--ink);padding:5px 6px;cursor:pointer;
+    background:var(--paper);border:1.5px solid var(--ink);padding:6px;cursor:pointer;
+    flex:0 0 auto;max-width:100%;
   }
   .toolbar select:focus{outline:none;}
   .cat-filter-wrap{display:flex;gap:6px;flex-wrap:wrap;}
   .cat-chip{
     font-family:var(--font);font-size:.68rem;letter-spacing:.5px;
-    border:1.5px solid var(--ink);background:transparent;padding:2px 7px;
+    border:1.5px solid var(--ink);background:transparent;padding:3px 7px;
     cursor:pointer;transition:background .12s,color .12s;color:var(--ink);
+    white-space:nowrap;
   }
   .cat-chip.active,.cat-chip:hover{background:var(--ink);color:var(--paper);}
 
   /* -- ENTRY FORM -- */
   .entry-form{display:flex;flex-direction:column;gap:8px;margin-bottom:4px;}
   .form-row{display:flex;align-items:stretch;gap:8px;}
-  .field{flex:1;position:relative;}
+  .field{flex:1;position:relative;min-width:0;}
   .field input,.field select{
-    width:100%;font-family:var(--font);font-size:.85rem;color:var(--ink);
-    background:transparent;border:none;border-bottom:1.5px solid var(--ink);padding:6px 2px 7px;
+    width:100%;min-width:0;font-family:var(--font);font-size:.85rem;color:var(--ink);
+    background:transparent;border:none;border-bottom:1.5px solid var(--ink);padding:7px 2px 8px;
   }
   .field select{cursor:pointer;}
   .field input::placeholder{color:#aaa;}
   .field input:focus,.field select:focus{outline:none;border-bottom-width:2.5px;}
-  .field-price{flex:.8;display:flex;align-items:baseline;gap:4px;}
-  .currency-prefix{font-size:.78rem;color:var(--ink-soft);padding-bottom:7px;}
+  .field-price{flex:.85;min-width:64px;display:flex;align-items:baseline;gap:4px;}
+  .currency-prefix{font-size:.78rem;color:var(--ink-soft);padding-bottom:8px;flex-shrink:0;}
+  .field-price input{min-width:0;}
   .field-price input::-webkit-outer-spin-button,
   .field-price input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
   .field-price input[type=number]{-moz-appearance:textfield;}
   .add-btn{
-    flex:0 0 auto;width:38px;border:1.5px solid var(--ink);background:var(--paper);
+    flex:0 0 auto;width:42px;min-height:42px;border:1.5px solid var(--ink);background:var(--paper);
     color:var(--ink);font-size:1.1rem;font-family:var(--font);line-height:1;
     cursor:pointer;transition:background .12s,color .12s;
+    display:flex;align-items:center;justify-content:center;
   }
   .add-btn:hover{background:var(--ink);color:var(--paper);}
 
   /* -- LEDGER -- */
   .table-head,.ledger-row{
     display:grid;
-    grid-template-columns:26px 14px 1fr auto 18px 18px;
-    column-gap:8px;align-items:start;
+    grid-template-columns:24px 14px minmax(0,1fr) auto 22px 22px;
+    column-gap:6px;align-items:start;
   }
   .table-head{font-size:.7rem;letter-spacing:1px;color:var(--ink-soft);padding-bottom:6px;}
   .table-head .col-amt{text-align:right;}
@@ -114,51 +121,57 @@
     .ledger-row{animation:slideIn .2s ease-out;}
   }
   @keyframes slideIn{from{opacity:0;transform:translateY(-3px);}to{opacity:1;transform:translateY(0);}}
-  .ledger-row .qty{color:var(--ink-soft);}
+  .ledger-row .qty{color:var(--ink-soft);font-size:.78rem;}
   .ledger-row .cat-dot{width:10px;height:10px;border-radius:50%;margin-top:3px;flex-shrink:0;}
-  .ledger-row .name{line-height:1.35;word-break:break-word;}
+  .ledger-row .name{line-height:1.35;word-break:break-word;overflow-wrap:break-word;min-width:0;}
   .ledger-row .name small{display:block;font-size:.68rem;color:var(--ink-soft);margin-top:1px;}
   .ledger-row .price{text-align:right;font-weight:600;white-space:nowrap;}
-  .action-btn{background:none;border:none;color:var(--ink-soft);font-size:.95rem;line-height:1.4;cursor:pointer;padding:0;}
+  .action-btn{
+    background:none;border:none;color:var(--ink-soft);font-size:.95rem;line-height:1;cursor:pointer;
+    padding:0;width:100%;height:24px;display:flex;align-items:center;justify-content:center;
+  }
   .action-btn:hover{color:var(--ink);}
 
   /* -- INLINE EDIT -- */
   .inline-edit{
     grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px;align-items:center;
-    padding:6px 0 4px;
+    padding:8px 0 4px;
   }
   .inline-edit input,.inline-edit select{
     font-family:var(--font);font-size:.8rem;color:var(--ink);background:transparent;
-    border:1.5px solid var(--ink);padding:4px 6px;
+    border:1.5px solid var(--ink);padding:5px 6px;min-width:0;
   }
-  .inline-edit input[type=text]{flex:1;min-width:100px;}
-  .inline-edit input[type=number]{width:90px;}
+  .inline-edit input[type=text]{flex:1 1 100px;min-width:90px;}
+  .inline-edit input[type=number]{width:90px;flex:0 1 90px;}
+  .inline-edit select{flex:1 1 100px;}
   .inline-edit .save-btn{
     font-family:var(--font);font-size:.75rem;letter-spacing:.5px;
     border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);
-    padding:4px 10px;cursor:pointer;
+    padding:6px 10px;cursor:pointer;
   }
   .inline-edit .cancel-btn{
     font-family:var(--font);font-size:.75rem;letter-spacing:.5px;
     border:1.5px solid var(--ink-soft);background:transparent;color:var(--ink-soft);
-    padding:4px 10px;cursor:pointer;
+    padding:6px 10px;cursor:pointer;
   }
 
   .empty-state{text-align:center;font-size:.8rem;color:var(--ink-soft);padding:18px 0;margin:0;}
 
   /* -- SUMMARY -- */
   .summary{font-size:.85rem;}
-  .summary-row{display:flex;justify-content:space-between;padding:3px 0;}
+  .summary-row{display:flex;justify-content:space-between;gap:8px;padding:3px 0;}
   .summary-row.total{font-weight:700;font-size:1rem;margin-top:4px;}
+  .summary-row.total span:last-child{text-align:right;word-break:break-word;}
   .summary-row.filtered-note{font-size:.72rem;color:var(--ink-soft);font-style:italic;}
 
   /* -- CAT BREAKDOWN -- */
   .cat-breakdown{font-size:.75rem;margin-top:8px;}
   .cat-breakdown-row{display:flex;align-items:center;gap:8px;padding:3px 0;}
   .cb-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-  .cb-bar-wrap{flex:1;height:4px;background:rgba(0,0,0,.1);}
+  .cb-label{min-width:0;flex:0 1 76px;font-size:.72rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .cb-bar-wrap{flex:1;height:4px;background:rgba(0,0,0,.1);min-width:20px;}
   .cb-bar{height:4px;}
-  .cb-val{text-align:right;min-width:70px;color:var(--ink-soft);}
+  .cb-val{text-align:right;flex:0 0 auto;min-width:60px;color:var(--ink-soft);}
 
   /* -- CHART -- */
   .chart-section{margin:12px 0;}
@@ -166,23 +179,23 @@
   .chart-tab{
     font-family:var(--font);font-size:.72rem;letter-spacing:.5px;
     border:1.5px solid var(--ink);background:transparent;color:var(--ink-soft);
-    padding:4px 10px;cursor:pointer;flex:1;text-align:center;
+    padding:6px 10px;cursor:pointer;flex:1;text-align:center;
   }
   .chart-tab:not(:first-child){border-left:none;}
   .chart-tab.active{background:var(--ink);color:var(--paper);}
-  .chart-container{position:relative;height:180px;}
+  .chart-container{position:relative;height:190px;width:100%;}
 
   /* -- ACTIONS -- */
-  .btn-row{display:flex;gap:10px;justify-content:center;margin-top:10px;}
+  .btn-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:10px;}
   .link-btn{
     background:none;border:none;font-family:var(--font);font-size:.7rem;
     letter-spacing:1px;color:var(--ink-soft);text-decoration:underline dotted;
-    cursor:pointer;padding:0;
+    cursor:pointer;padding:6px 2px;
   }
   .link-btn:hover{color:var(--ink);}
   .export-btn{
     background:none;border:1.5px solid var(--ink-soft);font-family:var(--font);
-    font-size:.7rem;letter-spacing:1px;color:var(--ink-soft);padding:4px 12px;
+    font-size:.7rem;letter-spacing:1px;color:var(--ink-soft);padding:6px 12px;
     cursor:pointer;transition:all .12s;
   }
   .export-btn:hover{background:var(--ink);color:var(--paper);border-color:var(--ink);}
@@ -201,6 +214,44 @@
   .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);}
   .section-label{font-size:.7rem;letter-spacing:2px;color:var(--ink-soft);margin:0 0 8px;}
 
+  /* keyboard focus visibility (desktop + accessibility) */
+  button:focus-visible,.cat-chip:focus-visible{outline:2px solid var(--ink);outline-offset:2px;}
+
+  /* -- PREVENT iOS AUTO-ZOOM ON FOCUS: form controls need >=16px font on touch-sized viewports -- */
+  @media (max-width: 640px){
+    .field input,.field select,
+    .search-wrap input,.toolbar select,
+    .inline-edit input,.inline-edit select{
+      font-size:16px;
+    }
+  }
+
+  /* -- NARROW PHONE TUNING -- */
+  @media(max-width:400px){
+    body{padding:28px 10px 50px;}
+    .receipt{padding:26px 16px 22px;}
+    .table-head,.ledger-row{
+      grid-template-columns:20px 12px minmax(0,1fr) auto 20px 20px;
+      column-gap:5px;
+    }
+    .ledger-row{font-size:.78rem;}
+    .cb-label{flex-basis:60px;}
+  }
+  @media(max-width:340px){
+    .table-head,.ledger-row{
+      grid-template-columns:16px 10px minmax(0,1fr) auto 18px 18px;
+      column-gap:4px;
+    }
+    h1{font-size:1.3rem;}
+  }
+
+  /* -- LARGER VIEWPORTS: a touch more breathing room, still a tidy receipt -- */
+  @media(min-width:600px){
+    .page{max-width:480px;}
+    body{padding:64px 24px 80px;}
+    .chart-container{height:210px;}
+  }
+
   /* -- PRINT -- */
   @media print{
     body{background:white;padding:0;}
@@ -209,7 +260,6 @@
     .toolbar,.entry-form,.chart-section,.btn-row,.action-btn,.del-btn,.chart-tabs{display:none!important;}
     .ledger-row.hidden-row{display:none!important;}
   }
-  @media(max-width:380px){.receipt{padding:28px 16px 24px;}}
 </style>
 </head>
 <body>
@@ -350,6 +400,7 @@ const CAT_COLORS = {
   health:'#E74C3C', leisure:'#8E44AD', education:'#16A085',
   clothing:'#D35400', other:'#7F8C8D'
 };
+const NARROW_QUERY = '(max-width: 480px)';
 
 let items = [];
 let nextId = 1;
@@ -359,6 +410,7 @@ let sortMode = 'date-desc';
 let activeCat = 'all';
 let chartInstance = null;
 let chartType = 'doughnut';
+let isNarrowLayout = window.matchMedia(NARROW_QUERY).matches;
 
 function loadItems(){
   try{
@@ -488,10 +540,10 @@ function render(){
     const priceSpan=document.createElement('span'); priceSpan.className='price';
     priceSpan.textContent=formatUSD(item.price);
     const editBtn=document.createElement('button'); editBtn.className='action-btn'; editBtn.type='button';
-    editBtn.textContent='pencil'; editBtn.setAttribute('aria-label','Edit '+item.name);
+    editBtn.textContent='\u270E'; editBtn.title='Edit'; editBtn.setAttribute('aria-label','Edit '+item.name);
     editBtn.addEventListener('click',()=>{ editingId=(editingId===item.id?null:item.id); render(); });
     const delBtn=document.createElement('button'); delBtn.className='action-btn del-btn'; delBtn.type='button';
-    delBtn.textContent='&times;'; delBtn.setAttribute('aria-label','Remove '+item.name);
+    delBtn.textContent='\u2715'; delBtn.title='Remove'; delBtn.setAttribute('aria-label','Remove '+item.name);
     delBtn.addEventListener('click',()=>removeItem(item.id));
     li.append(qtySpan,dotSpan,nameSpan,priceSpan,editBtn,delBtn);
     if(editingId===item.id) li.appendChild(buildInlineEdit(item));
@@ -517,8 +569,7 @@ function buildCatBreakdown(total){
     const pct=total>0?val/total:0;
     const row=document.createElement('div'); row.className='cat-breakdown-row';
     const dot=document.createElement('div'); dot.className='cb-dot'; dot.style.background=CAT_COLORS[cat]||'#888';
-    const lbl=document.createElement('span'); lbl.textContent=CAT_LABELS[cat]||cat;
-    lbl.style.minWidth='80px'; lbl.style.fontSize='.72rem';
+    const lbl=document.createElement('span'); lbl.className='cb-label'; lbl.textContent=CAT_LABELS[cat]||cat;
     const barWrap=document.createElement('div'); barWrap.className='cb-bar-wrap';
     const bar=document.createElement('div'); bar.className='cb-bar';
     bar.style.background=CAT_COLORS[cat]||'#888';
@@ -541,6 +592,7 @@ function updateChart(){
   if(chartInstance) chartInstance.destroy();
   if(items.length===0){ chartInstance=null; return; }
   const isDoughnut=chartType==='doughnut';
+  const legendPos = isNarrowLayout ? 'bottom' : 'right';
   chartInstance=new Chart(ctx,{
     type:isDoughnut?'doughnut':'bar',
     data:{
@@ -555,8 +607,9 @@ function updateChart(){
     },
     options:{
       responsive:true, maintainAspectRatio:false,
+      layout:{ padding: 2 },
       plugins:{
-        legend:{ display:isDoughnut, position:'right',
+        legend:{ display:isDoughnut, position:legendPos,
           labels:{font:{family:"'IBM Plex Mono',monospace",size:10},color:'#1A1A1A',boxWidth:10,padding:8} },
         tooltip:{
           callbacks:{
@@ -612,6 +665,16 @@ document.querySelectorAll('.chart-tab').forEach(btn=>{
 });
 
 exportPdfBtn.addEventListener('click',()=>{ window.print(); });
+
+const narrowMql = window.matchMedia(NARROW_QUERY);
+function handleBreakpointChange(e){
+  if(e.matches !== isNarrowLayout){
+    isNarrowLayout = e.matches;
+    updateChart();
+  }
+}
+if(narrowMql.addEventListener) narrowMql.addEventListener('change', handleBreakpointChange);
+else if(narrowMql.addListener) narrowMql.addListener(handleBreakpointChange);
 
 const today=new Date();
 dateLineEl.textContent=today.toLocaleDateString('en-US',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
