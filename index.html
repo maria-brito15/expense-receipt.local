@@ -10,6 +10,17 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
+    <link rel="manifest" href="pwa/manifest.json" />
+    <link rel="icon" href="pwa/icon-192.png" type="image/png" />
+    <link rel="apple-touch-icon" href="pwa/icon-192.png" />
+    <meta name="theme-color" content="#242018" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="recibo" />
   </head>
   <body data-theme="light">
     <div class="topbar">
@@ -95,5 +106,12 @@
     </div>
 
     <script src="script.js"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("sw.js").catch(() => {});
+        });
+      }
+    </script>
   </body>
 </html>
