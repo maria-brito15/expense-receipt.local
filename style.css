@@ -188,6 +188,7 @@ input[type="number"]:focus {
 }
 .type-toggle {
   display: flex;
+  width: 100%;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   overflow: hidden;
