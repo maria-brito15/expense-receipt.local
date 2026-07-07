@@ -55,6 +55,7 @@ digita valor + descrição  →  marca como entrada ou saída  →  escolhe uma 
 - **importar csv** — traz lançamentos de um arquivo `.csv`; eles são lidos e somados direto na sua lista.
 - **exportar pdf** — abre o diálogo de impressão do navegador com um layout limpo de recibo (toda a interface some).
 - **modo claro e escuro** — alterna no topo da tela, e é lembrado nas próximas visitas.
+- **instalável como pwa** — adiciona na tela inicial ou no desktop e roda como um app nativo, funciona até offline.
 - **totalmente responsivo** — o mesmo layout de recibo se adapta de celulares pequenos até tablet e desktop.
 - **armazenamento persistente** — tudo fica no `localStorage` como json. sobrevive a atualizações e reinicializações, nada é enviado pra lugar nenhum.
 
@@ -92,6 +93,12 @@ IBM Plex Mono  ·  localStorage  ·  sem etapa de build
 index.html         <- marcação e estrutura
 style.css          <- tema, layout e regras responsivas
 script.js          <- estado, renderização, import de csv e tema
+sw.js              <- service worker, cacheia o app pra uso offline (tem que ficar na raiz)
+pwa/
+  manifest.json          <- metadados do pwa, comportamento de instalação
+  icon-192.png            <- ícone do app
+  icon-512.png            <- ícone do app
+  icon-512-maskable.png   <- ícone adaptativo pro android
 README.pt-BR.md    <- este arquivo
 README.md          <- versão em inglês
 ```

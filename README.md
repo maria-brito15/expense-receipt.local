@@ -55,6 +55,7 @@ type value + description  →  mark as income or expense  →  pick a highlight 
 - **import from CSV** — bring in entries from a `.csv` file; they're parsed and merged straight into your ledger.
 - **export to PDF** — opens the browser print dialog with a clean receipt layout (all UI hidden).
 - **light and dark mode** — toggle at the top, remembered between visits.
+- **installable PWA** — add it to your home screen or desktop and it runs like a native app, offline included.
 - **fully responsive** — same paper-receipt layout adapts from small phones to tablets and desktop.
 - **persistent storage** — everything lives in `localStorage` as JSON. survives refreshes and restarts, nothing sent anywhere.
 
@@ -92,6 +93,12 @@ IBM Plex Mono  ·  localStorage  ·  zero build step
 index.html    <- markup and structure
 style.css     <- theming, layout, and responsive rules
 script.js     <- state, rendering, CSV import, and theme logic
+sw.js         <- service worker, caches the app for offline use (must stay at root)
+pwa/
+  manifest.json          <- PWA metadata, install behavior
+  icon-192.png            <- app icon
+  icon-512.png            <- app icon
+  icon-512-maskable.png   <- adaptive icon for Android
 README.md     <- this file
 ```
 
