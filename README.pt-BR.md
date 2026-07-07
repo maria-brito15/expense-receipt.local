@@ -2,8 +2,8 @@
 
 # 🧾 Recibo de Gastos
 
-**controle seus gastos como um recibo de papel — na hora.**
-*sem instalar · sem conta · sem servidor · so abrir e digitar*
+**controle suas entradas e saídas como um recibo de papel — na hora.**
+_sem instalar · sem conta · sem servidor · só abrir e digitar_
 
 [🇧🇷 ler em inglês](README.md) · [abrir o app →](https://maria-brito15.github.io/expense-receipt.local/index.html)
 
@@ -13,25 +13,25 @@
 
 ## ✨ por que isso existe
 
-sabe aquele momento em que voce precisa separar o que gastou no mercado, planejar o orcamento de uma viagem, ou simplesmente descobrir quanto saiu esse mes — e as opcoes sao:
+sabe aquele momento em que você precisa separar o que gastou no mercado, planejar o orçamento de uma viagem, ou simplesmente descobrir quanto sobrou esse mês — e as opções são:
 
-> pedir pra uma IA montar a lista e somar, ou digitar tudo na calculadora na mao
+> pedir pra uma IA montar a lista e somar, ou digitar tudo na calculadora na mão
 
-os dois sao *chato demais*. um e repetitivo, o outro exige abrir mais uma aba e ficar explicando o contexto. devia ser so uma pagina que voce abre e ja vai digitando.
+os dois são _chato demais_. um é repetitivo, o outro exige abrir mais uma aba e ficar explicando o contexto. devia ser só uma página que você abre e já vai digitando.
 
-entao sim — nasceu da preguica pura. tem um ditado que diz: *de a tarefa dificil pra pessoa preguicosa, porque ela vai achar um jeito mais facil de fazer.* e exatamente isso.
+então sim — nasceu da preguiça pura. tem um ditado que diz: _dê a tarefa difícil pra pessoa preguiçosa, porque ela vai achar um jeito mais fácil de fazer._ é exatamente isso.
 
-esse projeto tambem faz parte de uma serie de ferramentas pequenas que seguem a mesma filosofia: **"e chato fazer na mao, por que nao construir algo que faca por mim?"** — assim como o [padronizador de nomes de arquivo](https://github.com/maria-brito15/file-name-standardizer) que veio antes.
+esse projeto também faz parte de uma série de ferramentas pequenas que seguem a mesma filosofia: **"é chato fazer na mão, por que não construir algo que faça por mim?"** — assim como o [padronizador de nomes de arquivo](https://github.com/maria-brito15/file-name-standardizer) que veio antes.
 
 ---
 
 ## 🚀 como usar
 
-**online** — sem instalacao, so abrir o link:
+**online** — sem instalação, só abrir o link:
 
 > 🔗 [maria-brito15.github.io/expense-receipt.local/index.html](https://maria-brito15.github.io/expense-receipt.local/index.html)
 
-**localmente** — clone o repositorio e abra o arquivo direto no navegador:
+**localmente** — clone o repositório e abra o arquivo direto no navegador:
 
 ```bash
 git clone https://github.com/maria-brito15/expense-receipt.git
@@ -39,54 +39,41 @@ git clone https://github.com/maria-brito15/expense-receipt.git
 ```
 
 ```
-digita item + preco + categoria  →  adiciona  →  ve o total  →  exporta PDF
+digita valor + descrição  →  marca como entrada ou saída  →  escolhe uma cor  →  adiciona
 ```
-
----
-
-## 🗂️ categorias
-
-| categoria | cor |
-|---|---|
-| 🍽 Alimentacao | Laranja |
-| 🏠 Moradia | Azul |
-| 🚌 Transporte | Verde |
-| 💊 Saude | Vermelho |
-| 🎬 Lazer | Roxo |
-| 📚 Educacao | Verde-azulado |
-| 👔 Vestuario | Laranja queimado |
-| 📦 Outros | Cinza |
 
 ---
 
 ## 🎛️ funcionalidades
 
-- **adicionar lancamentos** — nome do item, preco e categoria. aperta `+` e ja ta na lista.
-- **editar no lugar** — clica no lapiszinho de qualquer linha pra alterar nome, preco ou categoria sem sair da pagina.
-- **pesquisa** — filtra a lista em tempo real enquanto voce digita.
-- **filtros por categoria** — aparecem automaticamente conforme voce adiciona itens. clica em um pra isolar aquela categoria.
-- **ordenacao** — por data (mais novo/mais antigo), valor (maior/menor) ou A-Z.
-- **graficos de gastos** — alterna entre pizza e barras. atualiza sozinho.
-- **barras de distribuicao** — cada categoria mostra sua fatia do total como uma barra de progresso.
-- **exportar PDF** — abre o dialogo de impressao do navegador com um layout limpo de recibo (toda a interface some).
-- **armazenamento persistente** — tudo fica no `localStorage`. sobrevive a atualizacoes e reinicializacoes, nada e enviado pra lugar nenhum.
+- **adicionar lançamentos** — valor, descrição e se é entrada (`+`) ou saída (`-`). um toque e já tá no recibo.
+- **cores de marca-texto** — destaca qualquer lançamento com uma cor, igual grifar algo num recibo de papel de verdade.
+- **pesquisa** — filtra a lista em tempo real enquanto você digita.
+- **filtro entradas / saídas** — chips pra isolar entradas, saídas, ou ver tudo junto.
+- **ordenação** — por data (mais novo/mais antigo), valor (maior/menor) ou A–Z.
+- **resumo ao vivo** — total de entradas, total de saídas e saldo, sempre visíveis no rodapé do recibo.
+- **importar csv** — traz lançamentos de um arquivo `.csv`; eles são lidos e somados direto na sua lista.
+- **exportar pdf** — abre o diálogo de impressão do navegador com um layout limpo de recibo (toda a interface some).
+- **modo claro e escuro** — alterna no topo da tela, e é lembrado nas próximas visitas.
+- **totalmente responsivo** — o mesmo layout de recibo se adapta de celulares pequenos até tablet e desktop.
+- **armazenamento persistente** — tudo fica no `localStorage` como json. sobrevive a atualizações e reinicializações, nada é enviado pra lugar nenhum.
 
 ---
 
-## 🏗️ arquitetura do codigo
+## 🏗️ arquitetura do código
 
-JS puro, zero dependencias, um arquivo so:
+JS puro, zero dependências, dividido em três arquivos:
 
 ```
-loadItems / saveItems     le e escreve no localStorage
-getFilteredSorted()       aplica busca, filtro de categoria e ordenacao
-render()                  reconstroi a lista, resumo, distribuicao e grafico
-buildInlineEdit()         injeta o formulario de edicao na linha do item
-updateChart()             destroi e recria a instancia do Chart.js
-addItem / removeItem      alteram o array de itens e disparam save + render
+loadItems / saveItems     lê e escreve a lista no localStorage como json
+getFilteredSorted()       aplica busca, filtro de entrada/saída e ordenação
+render()                  reconstrói a lista, os chips de categoria e o resumo
+renderSwatches()          desenha o seletor de cores de marca-texto
+parseCsvLine()            transforma uma linha importada de csv num lançamento
+applyTheme()               alterna e salva o modo claro/escuro
 ```
 
-todo o estado vive em quatro variaveis: `items`, `searchQuery`, `sortMode` e `activeCat`.
+todo o estado vive em algumas variáveis: `items`, `searchQuery`, `sortMode`, `activeCat`, `currentType` e `currentColor`.
 
 ---
 
@@ -94,7 +81,7 @@ todo o estado vive em quatro variaveis: `items`, `searchQuery`, `sortMode` e `ac
 
 ```
 HTML5  ·  CSS3 custom properties  ·  vanilla JS ES6+
-IBM Plex Mono  ·  Chart.js 4.4.1  ·  localStorage  ·  sem etapa de build
+IBM Plex Mono  ·  localStorage  ·  sem etapa de build
 ```
 
 ---
@@ -102,15 +89,17 @@ IBM Plex Mono  ·  Chart.js 4.4.1  ·  localStorage  ·  sem etapa de build
 ## 📁 estrutura do projeto
 
 ```
-index.html         <- o app inteiro (HTML + CSS + JS em um so arquivo)
+index.html         <- marcação e estrutura
+style.css          <- tema, layout e regras responsivas
+script.js          <- estado, renderização, import de csv e tema
 README.pt-BR.md    <- este arquivo
-README.md          <- versao em ingles
+README.md          <- versão em inglês
 ```
 
 ---
 
 <div align="center">
 
-feito com 💙 · roda em qualquer navegador · sem internet apos o primeiro acesso
+feito com 💙 · roda em qualquer navegador · sem internet após o primeiro acesso
 
 </div>
