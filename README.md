@@ -53,6 +53,7 @@ type value + description  →  mark as income or expense  →  pick a highlight 
 - **sorting** — by date (newest/oldest), amount (high/low), or A–Z.
 - **running summary** — total income, total expenses, and balance, always visible at the bottom of the receipt.
 - **import from CSV** — bring in entries from a `.csv` file; they're parsed and merged straight into your ledger.
+- **export to CSV** — download your whole ledger as a `.csv` file, ready to reopen here or in a spreadsheet.
 - **export to PDF** — opens the browser print dialog with a clean receipt layout (all UI hidden).
 - **light and dark mode** — toggle at the top, remembered between visits.
 - **installable PWA** — add it to your home screen or desktop and it runs like a native app, offline included.

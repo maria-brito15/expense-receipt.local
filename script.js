@@ -255,6 +255,37 @@ themeToggle.addEventListener("click", () => {
 });
 applyTheme(localStorage.getItem(THEME_KEY) || "light");
 
+// --- csv export ---
+function csvEscape(str) {
+  if (str == null) return "";
+  const s = String(str);
+  if (s.includes(",") || s.includes('"') || s.includes("\n")) {
+    return '"' + s.replace(/"/g, '""') + '"';
+  }
+  return s;
+}
+
+document.getElementById("exportBtn").addEventListener("click", () => {
+  const header = ["tipo", "valor", "descricao", "cor", "data"];
+  const rows = items.map((i) =>
+    [
+      i.type,
+      i.value.toFixed(2),
+      csvEscape(i.desc),
+      i.color || "",
+      new Date(i.date).toISOString(),
+    ].join(","),
+  );
+  const csv = [header.join(","), ...rows].join("\n");
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "recibo-" + new Date().toISOString().slice(0, 10) + ".csv";
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
 // --- csv import ---
 function parseCsvLine(line) {
   const result = [];

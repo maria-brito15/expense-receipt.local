@@ -137,9 +137,10 @@ body {
   font-size: 11px;
   text-align: center;
   text-transform: lowercase;
-  width: 180px;
-  margin-top: 6px;
-  padding: 2px 0;
+  width: 100%;
+  max-width: 320px;
+  margin: 6px auto 0;
+  padding: 2px 4px;
 }
 .month-input:focus {
   outline: none;
@@ -528,7 +529,14 @@ select {
 
 @media (min-width: 601px) and (max-width: 900px) {
   .receipt {
-    max-width: 520px;
+    max-width: 560px;
+    padding: 38px 40px 22px;
+  }
+  .receipt-head h1 {
+    font-size: 19px;
+  }
+  .month-input {
+    max-width: 260px;
   }
 }
 
@@ -537,23 +545,47 @@ select {
     padding: 56px 16px 100px;
   }
   .topbar {
-    max-width: 560px;
+    max-width: 620px;
   }
   .receipt {
-    max-width: 560px;
-    padding: 40px 34px 24px;
+    max-width: 620px;
+    padding: 44px 48px 26px;
   }
   .receipt-head h1 {
-    font-size: 20px;
+    font-size: 21px;
+  }
+  .month-input {
+    max-width: 280px;
+  }
+  .form {
+    gap: 10px;
+  }
+  .row {
+    gap: 14px;
+  }
+  input[type="text"],
+  input[type="number"] {
+    font-size: 13.5px;
+    padding: 9px 11px;
+  }
+  .add-btn {
+    padding: 11px;
+  }
+  .entry {
+    font-size: 14px;
+  }
+  .footer-actions {
+    gap: 10px;
   }
 }
 
 @media (min-width: 1400px) {
   .topbar {
-    max-width: 620px;
+    max-width: 680px;
   }
   .receipt {
-    max-width: 620px;
+    max-width: 680px;
+    padding: 48px 56px 28px;
   }
 }
 

@@ -53,6 +53,7 @@ digita valor + descrição  →  marca como entrada ou saída  →  escolhe uma 
 - **ordenação** — por data (mais novo/mais antigo), valor (maior/menor) ou A–Z.
 - **resumo ao vivo** — total de entradas, total de saídas e saldo, sempre visíveis no rodapé do recibo.
 - **importar csv** — traz lançamentos de um arquivo `.csv`; eles são lidos e somados direto na sua lista.
+- **exportar csv** — baixa toda a sua lista como um arquivo `.csv`, pronto pra reabrir aqui ou numa planilha.
 - **exportar pdf** — abre o diálogo de impressão do navegador com um layout limpo de recibo (toda a interface some).
 - **modo claro e escuro** — alterna no topo da tela, e é lembrado nas próximas visitas.
 - **instalável como pwa** — adiciona na tela inicial ou no desktop e roda como um app nativo, funciona até offline.
