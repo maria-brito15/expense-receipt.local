@@ -1,6 +1,7 @@
 const STORAGE_KEY = "recibo_entries_v1";
 const THEME_KEY = "recibo_theme_v1";
 const MONTH_KEY = "recibo_month_v1";
+const SALDO_KEY = "recibo_saldo_inicial_v1";
 
 const HIGHLIGHTS = [
   { id: "none", color: null },
@@ -18,6 +19,17 @@ let sortMode = "date-desc";
 let activeCat = null; // 'entrada' | 'saida' | null
 let currentType = "saida";
 let currentColor = null;
+let editingId = null;
+let saldoInicial = 0;
+
+function loadSaldoInicial() {
+  const raw = localStorage.getItem(SALDO_KEY);
+  saldoInicial = raw ? parseFloat(raw) : 0;
+  if (isNaN(saldoInicial)) saldoInicial = 0;
+}
+function saveSaldoInicial() {
+  localStorage.setItem(SALDO_KEY, String(saldoInicial));
+}
 
 function loadItems() {
   try {
@@ -139,15 +151,28 @@ function renderLedger() {
 
     const actions = document.createElement("div");
     actions.className = "actions";
+    const editBtn = document.createElement("button");
+    editBtn.textContent = "✎";
+    editBtn.title = "editar";
+    editBtn.addEventListener("click", () => {
+      startEdit(item.id);
+    });
+    actions.appendChild(editBtn);
+
     const delBtn = document.createElement("button");
     delBtn.textContent = "✕";
     delBtn.title = "remover";
     delBtn.addEventListener("click", () => {
       items = items.filter((i) => i.id !== item.id);
+      if (editingId === item.id) cancelEdit();
       saveItems();
       render();
     });
     actions.appendChild(delBtn);
+
+    if (editingId === item.id) {
+      row.classList.add("editing");
+    }
 
     row.appendChild(descWrap);
     const right = document.createElement("div");
@@ -170,8 +195,9 @@ function renderSummary() {
   const saidas = items
     .filter((i) => i.type === "saida")
     .reduce((s, i) => s + i.value, 0);
-  const saldo = entradas - saidas;
+  const saldo = saldoInicial + entradas - saidas;
   wrap.innerHTML = `
+    <div class="line"><span>saldo inicial</span><span class="val">${saldoInicial >= 0 ? "" : "- "}r$ ${formatMoney(Math.abs(saldoInicial))}</span></div>
     <div class="line"><span>total de entradas</span><span class="val" style="color:var(--entrada)">+ r$ ${formatMoney(entradas)}</span></div>
     <div class="line"><span>total de saídas</span><span class="val" style="color:var(--saida)">- r$ ${formatMoney(saidas)}</span></div>
     <div class="line total"><span>saldo</span><span class="val ${saldo >= 0 ? "pos" : "neg"}">${saldo >= 0 ? "+" : "-"} r$ ${formatMoney(Math.abs(saldo))}</span></div>
@@ -186,14 +212,54 @@ function render() {
 
 // --- form handlers ---
 document.getElementById("btnEntrada").addEventListener("click", () => {
-  currentType = "entrada";
-  document.getElementById("btnEntrada").classList.add("active");
-  document.getElementById("btnSaida").classList.remove("active");
+  setType("entrada");
 });
 document.getElementById("btnSaida").addEventListener("click", () => {
-  currentType = "saida";
-  document.getElementById("btnSaida").classList.add("active");
-  document.getElementById("btnEntrada").classList.remove("active");
+  setType("saida");
+});
+
+function setType(type) {
+  currentType = type;
+  document
+    .getElementById("btnEntrada")
+    .classList.toggle("active", type === "entrada");
+  document
+    .getElementById("btnSaida")
+    .classList.toggle("active", type === "saida");
+}
+
+function startEdit(id) {
+  const item = items.find((i) => i.id === id);
+  if (!item) return;
+  editingId = id;
+  document.getElementById("valorInput").value = item.value;
+  document.getElementById("descInput").value = item.desc;
+  setType(item.type);
+  currentColor = item.color || null;
+  renderSwatches();
+  document.getElementById("addBtn").textContent = "salvar alterações";
+  document.getElementById("cancelEditBtn").style.display = "block";
+  render();
+  document.getElementById("valorInput").scrollIntoView({
+    behavior: "smooth",
+    block: "center",
+  });
+}
+
+function cancelEdit() {
+  editingId = null;
+  document.getElementById("valorInput").value = "";
+  document.getElementById("descInput").value = "";
+  currentColor = null;
+  setType("saida");
+  renderSwatches();
+  document.getElementById("addBtn").textContent = "adicionar ao recibo";
+  document.getElementById("cancelEditBtn").style.display = "none";
+}
+
+document.getElementById("cancelEditBtn").addEventListener("click", () => {
+  cancelEdit();
+  render();
 });
 
 document.getElementById("addBtn").addEventListener("click", () => {
@@ -208,6 +274,20 @@ document.getElementById("addBtn").addEventListener("click", () => {
   }
   valorInput.style.borderColor = "var(--line)";
   descInput.style.borderColor = "var(--line)";
+
+  if (editingId) {
+    const item = items.find((i) => i.id === editingId);
+    if (item) {
+      item.type = currentType;
+      item.value = value;
+      item.desc = desc;
+      item.color = currentColor;
+    }
+    saveItems();
+    cancelEdit();
+    render();
+    return;
+  }
 
   items.push({
     id: uid(),
@@ -232,6 +312,15 @@ document.getElementById("searchInput").addEventListener("input", (e) => {
 document.getElementById("sortSelect").addEventListener("change", (e) => {
   sortMode = e.target.value;
   renderLedger();
+});
+
+// --- saldo inicial ---
+const saldoInicialInput = document.getElementById("saldoInicialInput");
+saldoInicialInput.addEventListener("input", () => {
+  const v = parseFloat(saldoInicialInput.value);
+  saldoInicial = isNaN(v) ? 0 : v;
+  saveSaldoInicial();
+  renderSummary();
 });
 
 // --- month label persistence ---
@@ -276,7 +365,12 @@ document.getElementById("exportBtn").addEventListener("click", () => {
       new Date(i.date).toISOString(),
     ].join(","),
   );
-  const csv = [header.join(","), ...rows].join("\n");
+  const descMesLine = [
+    "descricao_mes",
+    csvEscape(document.getElementById("monthLabel").value || ""),
+  ].join(",");
+  const saldoLine = ["saldo_inicial", saldoInicial.toFixed(2)].join(",");
+  const csv = [descMesLine, saldoLine, header.join(","), ...rows].join("\n");
   const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -318,11 +412,42 @@ document.getElementById("importFile").addEventListener("change", (e) => {
   const reader = new FileReader();
   reader.onload = (ev) => {
     const text = ev.target.result;
-    const lines = text.split(/\r?\n/).filter((l) => l.trim().length);
+    let lines = text.split(/\r?\n/).filter((l) => l.trim().length);
     if (lines.length < 2) {
       e.target.value = "";
       return;
     }
+
+    // linhas opcionais de metadados: "descricao_mes,..." e "saldo_inicial,..."
+    for (let m = 0; m < 2; m++) {
+      const cols = parseCsvLine(lines[0]);
+      const key = (cols[0] || "").trim().toLowerCase();
+      if (key === "saldo_inicial") {
+        const saldoImportado = parseFloat(cols[1]);
+        if (!isNaN(saldoImportado)) {
+          saldoInicial = saldoImportado;
+          saveSaldoInicial();
+          document.getElementById("saldoInicialInput").value = saldoInicial;
+        }
+        lines = lines.slice(1);
+      } else if (key === "descricao_mes") {
+        const descMes = (cols[1] || "").trim();
+        if (descMes) {
+          document.getElementById("monthLabel").value = descMes;
+          localStorage.setItem(MONTH_KEY, descMes);
+        }
+        lines = lines.slice(1);
+      } else {
+        break;
+      }
+    }
+
+    if (lines.length < 2) {
+      render();
+      e.target.value = "";
+      return;
+    }
+
     const header = parseCsvLine(lines[0]).map((h) => h.trim().toLowerCase());
     const idxTipo = header.indexOf("tipo");
     const idxValor = header.indexOf("valor");
@@ -363,5 +488,7 @@ document.getElementById("printBtn").addEventListener("click", () => {
 
 // --- init ---
 loadItems();
+loadSaldoInicial();
+saldoInicialInput.value = saldoInicial ? saldoInicial : "";
 renderSwatches();
 render();
