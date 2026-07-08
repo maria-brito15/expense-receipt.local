@@ -5,7 +5,7 @@
 **controle suas entradas e saídas como um recibo de papel — na hora.**
 _sem instalar · sem conta · sem servidor · só abrir e digitar_
 
-[🇧🇷 ler em inglês](README.md) · [abrir o app →](https://maria-brito15.github.io/expense-receipt.local/index.html)
+[🇧🇷 ler em inglês](README.md) · [abrir o app →](https://maria-brito15.github.io/expense-receipt.local/)
 
 </div>
 
