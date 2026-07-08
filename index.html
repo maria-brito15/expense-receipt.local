@@ -9,7 +9,11 @@
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css" />
+    <script>
+      document.write(
+        '<link rel="stylesheet" href="style.css?v=' + Date.now() + '">',
+      );
+    </script>
     <link rel="manifest" href="pwa/manifest.json" />
     <link rel="icon" href="pwa/icon-192.png" type="image/png" />
     <link rel="apple-touch-icon" href="pwa/icon-192.png" />
@@ -124,7 +128,9 @@
       <div class="stamp">— salvo automaticamente no localStorage —</div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+      document.write('<script src="script.js?v=' + Date.now() + '"><\/script>');
+    </script>
     <script>
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {

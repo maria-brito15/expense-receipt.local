@@ -418,7 +418,6 @@ document.getElementById("importFile").addEventListener("change", (e) => {
       return;
     }
 
-    // linhas opcionais de metadados: "descricao_mes,..." e "saldo_inicial,..."
     for (let m = 0; m < 2; m++) {
       const cols = parseCsvLine(lines[0]);
       const key = (cols[0] || "").trim().toLowerCase();
