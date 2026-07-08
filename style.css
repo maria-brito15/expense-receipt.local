@@ -147,6 +147,35 @@ body {
   border-color: var(--accent);
 }
 
+.initial-balance {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+.initial-balance label {
+  font-size: 10px;
+  color: var(--ink-soft);
+  letter-spacing: 0.05em;
+}
+.initial-balance input {
+  background: none;
+  border: none;
+  border-bottom: 1px dotted var(--line);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 12px;
+  text-align: center;
+  width: 90px;
+  padding: 2px 4px;
+}
+.initial-balance input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
 .form {
   display: flex;
   flex-direction: column;
@@ -236,8 +265,13 @@ input[type="number"]:focus {
   background: var(--paper-2);
   border: 1px dashed var(--line);
 }
-.add-btn {
+.add-row {
+  display: flex;
+  gap: 8px;
   margin-top: 4px;
+}
+.add-btn {
+  flex: 1;
   background: var(--ink);
   color: var(--paper);
   border: none;
@@ -250,6 +284,28 @@ input[type="number"]:focus {
   text-transform: lowercase;
   letter-spacing: 0.05em;
   transition: opacity 0.15s ease;
+}
+.cancel-edit-btn {
+  flex: 1;
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 13px;
+  padding: 10px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  text-transform: lowercase;
+  letter-spacing: 0.05em;
+}
+.cancel-edit-btn:hover {
+  border-color: var(--line-strong);
+  color: var(--ink);
+}
+.entry.editing {
+  background: var(--paper-2);
+  outline: 1px dashed var(--accent);
 }
 [data-theme="dark"] .add-btn {
   background: var(--ink);
@@ -620,5 +676,18 @@ button {
   .receipt {
     box-shadow: none;
     max-width: 100%;
+  }
+  .initial-balance input {
+    border: none;
+    -webkit-appearance: none;
+    appearance: textfield;
+  }
+  .initial-balance input::-webkit-outer-spin-button,
+  .initial-balance input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .month-input {
+    border: none;
   }
 }
