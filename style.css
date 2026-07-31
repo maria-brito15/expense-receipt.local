@@ -473,6 +473,13 @@ select {
 #importFile {
   display: none;
 }
+#resetBtn {
+  color: var(--saida);
+  border-color: var(--saida);
+}
+[data-theme="dark"] #resetBtn {
+  border-color: var(--saida);
+}
 
 .stamp {
   text-align: center;
