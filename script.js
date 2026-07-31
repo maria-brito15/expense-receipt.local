@@ -491,3 +491,38 @@ loadSaldoInicial();
 saldoInicialInput.value = saldoInicial ? saldoInicial : "";
 renderSwatches();
 render();
+
+document.getElementById("resetBtn").addEventListener("click", () => {
+  const confirmar = confirm(
+    "isso vai apagar todos os lançamentos, o saldo inicial e o nome do mês. essa ação não pode ser desfeita. continuar?",
+  );
+  if (!confirmar) return;
+
+  // limpa dados em memória
+  items = [];
+  saldoInicial = 0;
+  searchQuery = "";
+  sortMode = "date-desc";
+  activeCat = null;
+  editingId = null;
+  currentColor = null;
+  currentType = "saida";
+
+  // limpa localStorage
+  localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem(SALDO_KEY);
+  localStorage.removeItem(MONTH_KEY);
+  // (o tema não é apagado — deixa o usuário no modo que já escolheu)
+
+  // reseta os campos da interface
+  document.getElementById("valorInput").value = "";
+  document.getElementById("descInput").value = "";
+  document.getElementById("saldoInicialInput").value = "";
+  document.getElementById("searchInput").value = "";
+  document.getElementById("sortSelect").value = "date-desc";
+  document.getElementById("monthLabel").value = "";
+  setType("saida");
+  cancelEdit();
+  renderSwatches();
+  render();
+});
